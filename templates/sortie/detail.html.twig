@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail sortie - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <p><span class="fw-bold">Nom de la sortie :</span><br/> {{ sortie.nom }}</p>
+                <p><span class="fw-bold">Date et heure de la sortie :</span><br/> {{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('d/m/Y H:i:s') : 'Non défini' }}</p>
+                <p><span class="fw-bold">Date limite d'inscription :</span><br/> {{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('d/m/Y') : 'Non défini' }}</p>
+                <p><span class="fw-bold">Nombre de places :</span><br/> {{ sortie.nbInscriptionsMax }}</p>
+                <p><span class="fw-bold">Durée :</span><br/> {{ sortie.duree }} minutes</p>
+                <p><span class="fw-bold">Description et infos :</span><br/> {{ sortie.infosSortie }}</p>
+                <p><span class="fw-bold">Campus :</span><br/> {{ sortie.siteOrganisateur.nom }}</p>
+                <p><span class="fw-bold">Lieu :</span><br/> {{ sortie.lieu.nom }}</p>
+                <p><span class="fw-bold">Adresse :</span><br/> {{ sortie.lieu.rue }} <br/> {{ sortie.lieu.ville.codePostal }}, {{ sortie.lieu.ville.nom }}</p>
+                <p><span class="fw-bold">Latitude :</span><br/> {{ sortie.lieu.latitude }}</p>
+                <p><span class="fw-bold">Longitude :</span><br/> {{ sortie.lieu.longitude }}</p>
+            </div>
+
+            <div class="col-md-6">
+                <h4>Participants</h4>
+                {% if sortie.participants is not empty %}
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Pseudo</th>
+                                <th scope="col">Nom</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for participant in sortie.participants %}
+                            <tr>
+                                <td>{{ participant.pseudo ? participant.pseudo : 'Pas de pseudo' }}</td>
+                                <td class="d-lg-table-cell" >{% include './registration/profil_modal.html.twig' with { participant : participant } %}<a
+                                            class="text-primary text-decoration-none"
+                                            style="cursor: pointer;"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalOrganisateur-{{ participant.id ~ '-P' }}">
+                                        {{ participant.fullname }}
+                                    </a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>Aucun participant inscrit pour cette sortie.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

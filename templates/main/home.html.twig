@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - {{ parent() }}{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+{% endblock %}
+
+
+{% block body %}
+
+    {% if app.user and app.user.filename %}
+        <div>
+            <img class="img-profil" src="{{ asset('uploads/img_profile/' ~ app.user.filename) }}" alt="Representation of {{ app.user.prenom }}">
+        </div>
+        {% elseif app.user and not app.user.filename %}
+        <div>
+            <img class="img-profil" src="{{ asset('img/profilDefault.jpg' ~ app.user.filename) }}" alt="Representation of {{ app.user.prenom }}">
+        </div>
+    {% endif %}
+    <section>
+        <div class="text-center">
+        <h3>Bienvenue sur <span class="app-name">Alek's va sortir</span>, l'application qui transforme tes soirées étudiantes ! 🎉</h3>
+        </div>
+        <p>Tu rêves de rencontrer de nouvelles personnes, de partager des moments mémorables, ou simplement de casser la routine avec des sorties cool? 🎬🍹🎭 Avec <span class="app-name">Alek's va sortir</span>, finis les soirées solo!</p>
+
+        <p><span class="highlight">Crée tes propres sorties:</span> un after au bar, une séance ciné, un escape game ou même un karaoké déjanté. 🎤 Tous les étudiants peuvent devenir organisateurs: tu proposes l'idée, tu fixes l'heure, et hop, les autres te rejoignent!</p>
+
+        <p>Et si tu n’as pas d’idée? Pas de problème. Parcours les sorties déjà prévues autour de toi, inscris-toi en un clic et prépare-toi à t’éclater avec d’autres jeunes comme toi. 🌟</p>
+
+        <p><span class="call-to-action">Alors, prêt·e à sortir, rire et créer des souvenirs?</span> Rejoins la communauté et lance-toi dans l’aventure <span class="app-name">Alek's va sortir</span>! 🙌</p>
+    </section>
+    <p>
+        <a href="{{ path('sortie_show') }}">Liste des sorties bae</a>
+    </p>
+{% endblock %}

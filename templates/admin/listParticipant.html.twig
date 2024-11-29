@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau des participants{% endblock %}
+
+{% block body %}
+    <div class="">
+        {{ form_start(form, { 'method': 'POST' }) }}
+        <table id="myTable" class="display responsive nowrap">
+            <thead>
+            <tr class='firstRow'>
+                <th class="d-md-table-cell">Nom</th>
+                <th class="d-md-table-cell">Prénom</th>
+                <th class="d-md-table-cell">Campus</th>
+                <th class="d-md-table-cell">Statut</th>
+                <th class="d-md-table-cell">Désactiver</th>
+                <th class="d-md-table-cell">Supprimer</th>
+                {% if is_granted("ROLE_SUPER_ADMIN") %}
+                    <th class="d-md-table-cell" id="admin" >Modifier utilisateur</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for participant in participants %}
+                <tr>
+                    <td class="d-md-table-cell">{{ participant.nom }}</td>
+                    <td class="d-md-table-cell">{{ participant.prenom }}</td>
+                    <td class="d-md-table-cell">{{ participant.campus.nom }}</td>
+                    <td class="d-md-table-cell">{{ participant.actif ? "Actif" : "Inactif" }}</td>
+                    <td class="d-md-table-cell">
+                        {{ form_widget(form['participant_' ~ loop.index0], {'attr': {'class': 'disable-checkbox'}}) }}
+                    </td>
+                    <td class="d-md-table-cell">
+                        {{ form_widget(form['delete_' ~ loop.index0], {'attr': {'class': 'delete-checkbox'}}) }}
+
+                    </td>
+                    {% if is_granted("ROLE_SUPER_ADMIN") %}
+                        <td class="d-md-table-cell">
+                            <a class="btn btn-link" href="{{ path('superadmin_ajoutAdmin', {id: participant.id }) }}">
+                                Ici
+                            </a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {{ form_row(form.submit) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

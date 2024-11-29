@@ -1,0 +1,35 @@
+
+input[type="checkbox"] {
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 32px;
+    height: 32px;
+    background-color: #fff;
+    border: 2px solid #000;
+    border-radius: 4px;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #4caf50;
+    border-color: #4caf50;
+}
+
+input[type="checkbox"]:hover {
+    background-color: #ddd;
+}
+
+input[type="checkbox"]:active {
+    background-color: #bbb;
+}
+
+@media (max-width: 767px) {
+    #myTable td:nth-child(4),
+    #myTable td:nth-child(5),
+    #myTable td:nth-child(6){
+        display: none;
+    }
+}

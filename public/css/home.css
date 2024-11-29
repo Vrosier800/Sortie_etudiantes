@@ -1,0 +1,17 @@
+.img-profil {
+    max-width: 120px;
+    height: auto;
+}
+
+.app-name {
+     font-weight: bold;
+     color: #ff6347;
+ }
+.highlight {
+    font-weight: bold;
+    color: #2e8b57;
+}
+.call-to-action {
+    font-weight: bold;
+    color: #1e90ff;
+}

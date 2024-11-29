@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Importation - {{ parent() }}{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    <h3>Veuillez importer vos participants depuis un fichier csv</h3>
+
+    <p class="mb-0">Telecharger un exemple de fichier csv:</p>
+    <a href="{{ asset('uploads/file/exemple.csv') }}" download="exemple.csv">
+        <button class="btn btn-secondary mb-5">Télécharger ici</button>
+    </a>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+        <button type="submit" class="btn btn-submit">Importer</button>
+    {{ form_end(form) }}
+
+
+{% endblock %}

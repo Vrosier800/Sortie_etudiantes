@@ -1,0 +1,44 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalid-{{ groupe.id }}">
+    Détails
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalid-{{ groupe.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Membres du groupe</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="container table table-succes">
+                        <thead>
+                        <tr class='firstRow'>
+                            <th class="d-lg-table-cel">Nom/Prénom</th>
+                            <th class="d-lg-table-cel">Pseudo</th>
+                            <th class="d-lg-table-cel">mail</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for utilisateur in groupe.utilisateurs %}
+                            <tr>
+                                <td class="d-lg-table-cel">{{ utilisateur.fullname}}</td>
+                                <td class="d-lg-table-cel">{{ utilisateur.pseudo }}</td>
+                                <td class="d-lg-table-cel">{{ utilisateur.mail }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="{{ path('groupe_modifier', {'id': groupe.id}) }}" class="btn btn-primary">Modifier</a>
+                <form action="{{ path('groupe_supprimer', {'id':groupe.id}) }}" >
+                    <button type="submit" class="btn btn-danger">Supprimer</button></form>
+            </div>
+        </div>
+    </div>
+</div>

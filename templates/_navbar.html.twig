@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <div class="flex text-black">
+            <div class="header-logo">
+                <a class="nav-link active" aria-current="page" href="{{ path('main_home') }}">
+                    <h1 class="fs-6">Aleks va SORTIRRRRR</h1>
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo du site" >
+                </a>
+            </div>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarScroll">
+            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                {% if app.user %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('sortie_show') }}">Liste des sorties</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('groupe_list') }}">Mes groupes</a>
+                </li>
+                {% endif %}
+                {% if not app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_login') }}">Se connecter</a>
+                    </li>
+                {% else %}
+                    {% if is_granted("ROLE_ADMIN") %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('admin_dashboard') }}">Dashboard Admin</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
+                    </li>
+                {% endif %}
+            </ul>
+
+            {% if app.user %}
+                <div class="d-flex align-items-center ms-auto">
+                    <div class="card border-secondary mb-0" style="max-width: 15rem;">
+                        <div class="card-header">{{ app.user.fullname }}</div>
+                        <div class="card-body text-secondary">
+                            <p class="card-text">
+                                <a class="nav-link" href="{{ path('app_modifier', {'id': app.user.id}) }}">Modifier mon profil</a>
+                                {{ 'now' | date('d/m/Y') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>

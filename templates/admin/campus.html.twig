@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des campus - {{ parent() }}{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+{% endblock %}
+
+{% block body %}
+    <h2>Gestion des campus</h2>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Campus</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+
+        {% for c in campus %}
+            <tbody>
+            <tr>
+                <td>{{ c.nom }}</td>
+                <td>
+                    <a href="{{ path('admin_updateCampus', {id: c.id}) }}">
+                        <button class="btn btn-link">Modifier</button>
+                    </a>
+                    <form action="{{ path('admin_deleteCampus', {id: c.id}) }}" method="POST">
+                        <input type="hidden" value="{{ c.id }}">
+                        <button class="btn btn-link" type="submit">
+                            Supprimer
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+    <a href="{{ path('admin_createCampus') }}">
+        <button class="btn btn-link">Ajouter un campus</button>
+    </a>
+
+{% endblock %}

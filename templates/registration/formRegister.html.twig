@@ -1,0 +1,127 @@
+<div class="card text-center col-12 col-lg-6 m-auto">
+    <div class="card-header">
+        {%  if isNew %}
+            <h1>Inscription</h1>
+        {% else %}
+            <h1>Modifier mon profil</h1>
+        {% endif %}
+    </div>
+
+    {{ form_start(registrationForm) }}
+    <div class="card-body">
+        <div class="mb-3">
+            {{ form_row(registrationForm.nom, {
+                'attr': {'class': 'form-control'},
+                'label_attr': {'class': 'form-label'}
+            }) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_row(registrationForm.prenom, {
+                'attr': {'class': 'form-control'},
+                'label_attr': {'class': 'form-label'}
+            }) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_row(registrationForm.mail, {
+                'attr': {'class': 'form-control'},
+                'label_attr': {'class': 'form-label'}
+            }) }}
+        </div>
+
+        {% if not isNew %}
+            <div class="mb-3">
+                {{ form_row(registrationForm.plainPassword, {
+                    'attr': {'class': 'form-control'},
+                    'label_attr': {'class': 'form-label'}
+                }) }}
+            </div>
+        {% endif %}
+
+        <div class="mb-3">
+            {{ form_row(registrationForm.pseudo, {
+                'attr': {'class': 'form-control'},
+                'label_attr': {'class': 'form-label'}
+            }) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_row(registrationForm.telephone, {
+                'attr': {'class': 'form-control'},
+                'label_attr': {'class': 'form-label'}
+            }) }}
+        </div>
+
+        {% if isNew %}
+            <div class="mb-3">
+                {{ form_row(registrationForm.campus, {
+                    'attr' : {'class': 'form-control'},
+                    'label_attr': {'class': 'form-label'}
+                }) }}
+            </div>
+        {% endif %}
+
+        {% if not isNew %}
+            <div class="mb-3">
+                {{ form_row(registrationForm.file, {
+                    'attr': {'class': 'form-control'},
+                    'label_attr': {'class': 'form-label'}
+                }) }}
+            </div>
+        {% endif %}
+
+        {% if app.user and app.user.filename is not null and not isNew %}
+            <div class="mb-3">
+                <input type="checkbox"
+                       id="registration_form_deleteCb"
+                       name="registration_form[deleteCb]"
+                       class="btn-check"
+                       autocomplete="off"
+                       >
+                <label class="btn btn-outline-success" for="registration_form_deleteCb">
+                    Supprimer l'image
+                </label>
+                {{ form_widget(registrationForm.deleteCb, {
+                    'attr': {'class': 'visually-hidden', 'type': 'hidden'}
+                }) }}
+                {{ form_errors(registrationForm.deleteCb) }}
+            </div>
+        {% endif %}
+        {% if is_granted("ROLE_SUPER_ADMIN") %}
+            {{ form_widget(registrationForm.admin) }}
+        {% endif %}
+        {% if isNew %}
+            <div class="mb-3">
+                <input type="checkbox"
+                       id="registration_form_actif"
+                       name="registration_form[actif]"
+                       class="btn-check"
+                       autocomplete="off"
+                >
+                <label class="btn btn-outline-success" for="registration_form_actif">
+                    Activer l'utilisateur
+                </label>
+                {{ form_widget(registrationForm.actif, {
+                    'attr': {'class': 'visually-hidden', 'type': 'hidden'}
+                }) }}
+                {{ form_errors(registrationForm.actif) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="card-footer container-fluid d-flex flex-column flex-md-row justify-content-between align-items-center">
+        <div class="d-flex justify-content-center mb-2 mb-md-0">
+            {%  if isNew %}
+                <button class="btn btn-lg btn-primary" type="submit">
+                    Ajouter un participant
+                </button>
+            {% else %}
+            <button class="btn btn-lg btn-primary" type="submit">
+                Enregistrer
+            </button>
+            {% endif %}
+        </div>
+    </div>
+    {{ form_end(registrationForm) }}
+</div>

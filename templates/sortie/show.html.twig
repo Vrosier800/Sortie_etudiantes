@@ -1,0 +1,161 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sortie - {{ parent() }}{% endblock %}
+
+
+{% block body %}
+    <h1>Sortie</h1>
+
+
+    {# Faire le filtre ici #}
+    <form action="{{ path('sortie_show') }}" method="POST" class="container mt-4">
+        <fieldset>
+            <legend class="mb-4">Filtrer les résultats</legend>
+
+            <div class="row g-3 align-items-end">
+                <!-- Campus Filter -->
+                <div class="col-md-4">
+                    <label for="campus" class="form-label">Campus</label>
+                    <select name="campus" id="campus" class="form-select">
+                        <option value="null">Tous les campus</option>
+                        {% for c in campus %}
+                            <option value="{{ c.id }}">{{ c.nom }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Search Filter -->
+                <div class="col-md-4">
+                    <label for="search" class="form-label">Nom de la sortie</label>
+                    <input type="search" id="search" name="search" class="form-control" placeholder="Rechercher une sortie...">
+                </div>
+
+                <!-- Date Filters -->
+                <div class="col-md-2">
+                    <label for="dateDebut" class="form-label">Date de début</label>
+                    <input type="date" name="dateDebut" id="dateDebut" class="form-control">
+                </div>
+
+                <div class="col-md-2">
+                    <label for="dateFin" class="form-label">Date de fin</label>
+                    <input type="date" name="dateFin" id="dateFin" class="form-control">
+                </div>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <!-- Checkbox Filters -->
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input type="checkbox" name="mesSortiesOrganisateur" id="mesSortiesOrganisateur" class="form-check-input">
+                        <label for="mesSortiesOrganisateur" class="form-check-label">Mes sorties en tant qu'organisateur</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input type="checkbox" name="mesSortiesInscrit" id="mesSortiesInscrit" class="form-check-input">
+                        <label for="mesSortiesInscrit" class="form-check-label">Sorties où je suis inscrit</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input type="checkbox" name="sortiesNonInscrit" id="sortiesNonInscrit" class="form-check-input">
+                        <label for="sortiesNonInscrit" class="form-check-label">Sorties où je ne suis pas inscrit</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input type="checkbox" name="sortiesPasses" id="sortiesPasses" class="form-check-input">
+                        <label for="sortiesPasses" class="form-check-label">Sorties passées</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between mt-4">
+                <a href="{{ path('sortie_new') }}" class="btn btn-secondary">Créer une sortie</a>
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </div>
+        </fieldset>
+    </form>
+
+    <br/>
+    <div class="table-responsive">
+        <table class="container table table-succes">
+
+            <thead>
+                <tr class='firstRow'>
+                    <th class="d-md-table-cell">Nom de la sortie</th>
+                    <th class="d-lg-table-cel">Lieu/Ville</th>
+                    <th class="d-none d-md-table-cell">Début de la sortie</th>
+                    <th class="d-none d-md-table-cell">Date limite d'inscription</th>
+                    <th class="d-none d-xl-table-cell">Nombre d'inscrit</th>
+                    <th class="d-none d-xl-table-cell">Etat</th>
+                    <th class="d-lg-table-cell">Organisateur</th>
+                    <th class="">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for sortie in sorties %}
+                    <tr>
+                        <td class="d-md-table-cell" >{{ sortie.nom }}</td>
+                        <td class="d-lg-table-cel" >{{ sortie.lieu.nom }} / {{ sortie.lieu.ville.nom  }}</td>
+                        <td class="d-none d-md-table-cell" >{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('d/m/Y H:i:s') : '' }}</td>
+                        <td class="d-none d-md-table-cell" >{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('d/m/Y') : '' }}</td>
+                        <td class="d-none d-xl-table-cell" > {{ sortie.participants|length }} / {{ sortie.nbInscriptionsMax }}</td>
+                        <td class="d-none d-xl-table-cell" >{{ sortie.etat.libelle }}</td>
+                        <td class="d-lg-table-cell" >{% include './registration/profil_modal.html.twig' with { sortieM : sortie } %}<a
+                                    class="text-primary text-decoration-none"
+                                    style="cursor: pointer;"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalOrganisateur-{{ sortie.organisateur.id }}">
+                                {{ sortie.organisateur.fullname }}
+                            </a></td>
+                        <td class="d-lg-table-cell" >
+                            <div>
+                            <a href="{{ path('sortie_detail', {id: sortie.id }) }}">
+                                Afficher
+                            </a>
+                            </div>
+                            {% if sortie.etat.libelle == 'Ouverte' and app.user not in sortie.participants and app.user != sortie.organisateur %}
+                                <div>
+                                    <a href="{{ path('sortie_inscription', {id: sortie.id }) }}">
+                                    S'inscrire
+                                    </a>
+                            </div>
+                            {% endif %}
+
+                            {% if sortie.etat.libelle =='Ouverte' and app.user in sortie.participants %}
+                                <div>
+                            <a href="{{ path('sortie_desistement', {id: sortie.id }) }}">
+                                Se désister
+                            </a>
+                                </div>
+                            {% endif %}
+
+                            {% if sortie.etat.libelle not in ['Clôturée', 'Activité en cours', 'Passée', 'Annulée', 'Archivée'] and (sortie.organisateur == app.user or is_granted('ROLE_ADMIN') in app.user.roles) %}
+                                <div><a href="{{ path('sortie_edit', {id: sortie.id }) }}">
+
+                                Modifier
+                            </a>
+                                </div>
+                            {% endif %}
+
+                            {% if sortie.etat.libelle not in ['Clôturée', 'Activité en cours', 'Passée', 'Archivée', 'Annulée'] and (sortie.organisateur == app.user or is_granted('ROLE_ADMIN') in app.user.roles) %}
+                                <div>{% include './sortie/annuler_modal.html.twig' with {id: sortie.id, form: forms[sortie.id]} %}</div>
+                            {% endif %}
+                        </td>
+                    </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{#   <a href="{{ path('sortie_index') }}">back to list</a>
+
+    <a href="{{ path('sortie_edit', {'id': sortie.id}) }}">edit</a>
+
+    {{ include('sortie/_delete_form.html.twig') }} #}
+{% endblock %}
+

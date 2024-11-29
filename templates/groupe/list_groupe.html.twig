@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes groupes{% endblock %}
+
+{% block body %}
+    <div class="table-responsive">
+        <table class="container table table-succes">
+            <thead>
+                <tr class='firstRow'>
+                    <th class="d-lg-table-cel">Nom du groupe</th>
+                    <th class="d-lg-table-cel">Nombre de membre</th>
+                    <th class="d-lg-table-cel">Voir les membres</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for groupe in groupes %}
+                <tr>
+                    <td class="d-lg-table-cel">{{ groupe.nom }}</td>
+                    <td class="d-lg-table-cel">{{ groupe.utilisateurs|length }}</td>
+                    <td class="d-lg-table-cel">{% include './groupe/modal_groupe.html.twig'with { groupe : groupe } %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+            <a href="{{path('groupe_creer') }}" class="btn btn-primary">Créer un groupe</a>
+        </div>
+    </div>
+
+{% endblock %}

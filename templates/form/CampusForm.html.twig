@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout Campus - {{ parent() }}{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(campus) }}
+    {{ form_widget(campus) }}
+    {% if update %}
+        <button type="submit" class="btn btn-submit">Modifier le campus</button>
+    {% else %}
+        <button type="submit" class="btn btn-submit">Ajouter le campus</button>
+    {% endif %}
+    {{ form_end(campus) }}
+
+
+{% endblock %}

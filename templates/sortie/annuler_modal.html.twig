@@ -1,0 +1,25 @@
+<!-- Button trigger modal -->
+<a type="button" class="text-primary text-decoration-none" data-bs-toggle="modal" data-bs-target="#annulerModal-{{ id }}">
+    Annuler
+</a>
+<!-- Modal -->
+<div class="modal fade" id="annulerModal-{{ id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Pour quel motif annulez-vous cette sortie ?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{form_start(form) }}
+                {{ form_widget(form) }}
+                <button class="btn">{{ button_label|default('Enregistrer') }}</button>
+                {{ form_end(form) }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+

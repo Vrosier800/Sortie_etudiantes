@@ -1,0 +1,128 @@
+{# templates/modals.html.twig #}
+
+{% block modals %}
+    <!-- Modal Principal -->
+    <div
+            class="modal fade modal-lg"
+            id="modalOrganisateur-{{ sortieM is defined and sortieM ? sortieM.organisateur.id : (participant.id ~ '-P') }}"
+            tabindex="-1"
+            aria-hidden="true"
+            aria-labelledby="modalOrganisateurLabel-{{ sortieM is defined and sortieM? sortieM.organisateur.id : (participant.id ~ '-P') }}">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalOrganisateurLabel-{{ sortieM is defined and sortieM ? sortieM.organisateur.id : (participant.id ~ '-P') }}">
+                        Profil de {{ sortieM is defined and sortieM ? sortieM.organisateur.fullname : participant.fullname }}
+                    </h1>
+                    <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img
+                                    src="{{ sortieM is defined and sortieM ?
+                                    (sortieM.organisateur.filename ? asset('uploads/img_profile/' ~ sortieM.organisateur.filename) : asset('img/profilDefault.jpg')) :
+                                    (participant.filename ? asset('uploads/img_profile/' ~ participant.filename) : asset('img/profilDefault.jpg')) }}"
+                                    class="img-fluid rounded-start"
+                                    alt="Photo de {{ sortieM is defined and sortieM ? sortieM.organisateur.fullname : participant.fullname }}">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <p class="card-text">Pseudo : {{ sortieM is defined and sortieM ? (sortieM.organisateur.pseudo ?: 'Aucun pseudo') : (participant.pseudo ?: 'Aucun pseudo') }}</p>
+                                <p class="card-text">Téléphone : {{ sortieM is defined and sortieM ? (sortieM.organisateur.telephone ?: 'Non spécifié') : (participant.telephone ?: 'Non spécifié') }}</p>
+                                <p class="card-text">Email : {{ sortieM is defined and sortieM ? sortieM.organisateur.mail : participant.mail }}</p>
+                                <p class="card-text">Campus : {{ sortieM is defined and sortieM ? sortieM.organisateur.campus.nom : participant.campus.nom }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                            class="btn btn-primary"
+                            data-bs-target="#modalOrganisateurStep2-{{ sortieM is defined and sortieM ? sortieM.organisateur.id : (participant.id ~ '-P') }}"
+                            data-bs-toggle="modal">
+                        Voir les sorties organisées
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Secondaire (Sorties organisées) -->
+    <div
+            class="modal fade modal-lg"
+            id="modalOrganisateurStep2-{{ sortieM is defined and sortieM ? sortieM.organisateur.id : (participant.id ~ '-P') }}"
+            tabindex="-1"
+            aria-hidden="true"
+            aria-labelledby="modalOrganisateurStep2Label-{{ sortieM is defined and sortieM ? sortieM.organisateur.id : (participant.id ~ '-P') }}">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalOrganisateurStep2Label-{{ sortieM is defined and sortieM ? sortieM.organisateur.id : participant.fullname }}">
+                        Sorties organisées par {{ sortieM is defined and sortieM ? sortieM.organisateur.fullname : participant.fullname }}
+                    </h1>
+                    <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-0">
+                        <div class="col-12">
+                            <div class="card-body">
+                                <h5 class="card-title">Sorties organisées</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table table-succes">
+                                        <thead class="table-light">
+                                        <tr>
+                                            <th class="d-md-table-cell">Nom</th>
+                                            <th class="d-lg-table-cell">Lieu</th>
+                                            <th class="d-none d-xl-table-cell">Ville</th>
+                                            <th class="d-none d-md-table-cell">Début</th>
+                                            <th class="d-lg-table-cell">Inscription</th>
+                                            <th class="d-none d-xl-table-cell">État</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for sortieMOrg in sortieM is defined and sortieM ? sortieM.organisateur.organisateurs : participant.organisateurs %}
+                                            <tr>
+                                                <td class="d-md-table-cell">{{ sortieMOrg.nom }}</td>
+                                                <td class="d-lg-table-cell">{{ sortieMOrg.lieu.nom }}</td>
+                                                <td class="d-none d-xl-table-cell">{{ sortieMOrg.lieu.ville.nom }}</td>
+                                                <td class="d-none d-md-table-cell">{{ sortieMOrg.dateHeureDebut ? sortieMOrg.dateHeureDebut|date('d/m/Y H:i:s') : '' }}</td>
+                                                <td class="d-lg-table-cell">Jusqu'au : <br/>{{ sortieMOrg.dateLimiteInscription ? sortieMOrg.dateLimiteInscription|date('d/m/Y') : '' }}</td>
+                                                <td class="d-none d-xl-table-cell">{{ sortieMOrg.etat.libelle }}</td>
+                                                <td>
+                                                    <a href="{{ path('sortie_detail', {id: sortieMOrg.id}) }}"
+                                                       class="btn btn-sm btn-outline-info"
+                                                       id="afficher-{{ sortieM is defined and sortieM ? sortieM.organisateur.id : (participant.id ~ '-P') }}">
+                                                        <i class="bi bi-eye"></i> Voir
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                            class="btn btn-secondary"
+                            data-bs-target="#modalOrganisateur-{{ sortieM is defined and sortieM ? sortieM.organisateur.id : (participant.id ~ '-P') }}"
+                            data-bs-toggle="modal">
+                        Retour au profil
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

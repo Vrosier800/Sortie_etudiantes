@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des campus - {{ parent() }}{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+{% endblock %}
+
+{% block body %}
+    <h2 class="mb-5">Tableau de gestion de {{ app.user.pseudo ? : app.user.fullname }}</h2>
+
+    <table class="table table-bordered w-50 mx-auto">
+        <thead>
+        <tr>
+            <th scope="col">Page</th>
+            <th scope="col">Lien</th>
+        </tr>
+        </thead>
+
+            <tbody>
+            <tr>
+                <td>Gestion des campus</td>
+                <td>
+                    <a href="{{ path('admin_campus') }}">
+                        <button class="btn btn-link">Ici</button>
+                    </a>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Ajouter un participant</td>
+                <td>
+                    <a href="{{ path('admin_createParticipant') }}">
+                        <button class="btn btn-link">Ici</button>
+                    </a>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Gerer les participants</td>
+                <td>
+                    <a href="{{ path('admin_listParticipant') }}">
+                        <button class="btn btn-link">Ici</button>
+                    </a>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Importation d'une liste de participant en CSV</td>
+                <td>
+                    <a href="{{ path('admin_importCsv') }}">
+                        <button class="btn btn-link">Ici</button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+    </table>
+
+{% endblock %}

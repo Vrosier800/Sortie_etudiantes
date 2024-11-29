@@ -1,0 +1,7 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <a class="btn" href="/lieu/new">Creer lieu</a>
+    <a class="btn" href="{{ path('ville_creer') }}">Creer ville</a>
+    <button class="btn">{{ button_label|default('Save') }}</button>
+
+{{ form_end(form) }}

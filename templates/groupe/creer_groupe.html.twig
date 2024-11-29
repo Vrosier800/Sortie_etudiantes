@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% if isUpdate %}
+    Modifier un groupe
+{% else %}
+    Créer un groupe
+{% endif %}{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {% if isUpdate %}
+        <button type="submit" class="btn btn-primary">Modifier un groupe</button>
+    {% else %}
+        <button type="submit" class="btn btn-primary">Créer un groupe</button>
+    {% endif %}
+    {{ form_end(form) }}
+
+
+{% endblock %}
